@@ -371,10 +371,29 @@ input[type="range"]::-moz-range-thumb {
       }).join("");
     }
 
-    // Attach listeners
-    Object.values(els).forEach(input => input.addEventListener("input", calculate));
+    const STORAGE_KEY = "eggPricingState";
 
-    // Initial render
+    function saveState() {
+      const state = {};
+      Object.entries(els).forEach(([key, input]) => { state[key] = input.value; });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function loadState() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        if (!saved) return;
+        Object.entries(els).forEach(([key, input]) => {
+          if (saved[key] !== undefined) input.value = saved[key];
+        });
+      } catch (e) { /* ignore corrupt data */ }
+    }
+
+    // Attach listeners
+    Object.values(els).forEach(input => input.addEventListener("input", () => { saveState(); calculate(); }));
+
+    // Restore previous state then render
+    loadState();
     calculate();
   </script>
 
