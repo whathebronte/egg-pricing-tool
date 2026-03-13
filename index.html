@@ -371,10 +371,35 @@ input[type="range"]::-moz-range-thumb {
       }).join("");
     }
 
-    // Attach listeners
-    Object.values(els).forEach(input => input.addEventListener("input", calculate));
+    // Save state to localStorage on every change
+    function saveState() {
+      const state = {};
+      for (const [key, input] of Object.entries(els)) {
+        state[key] = input.value;
+      }
+      localStorage.setItem("eggPricingState", JSON.stringify(state));
+    }
 
-    // Initial render
+    // Restore state from localStorage
+    function restoreState() {
+      const saved = localStorage.getItem("eggPricingState");
+      if (!saved) return;
+      try {
+        const state = JSON.parse(saved);
+        for (const [key, val] of Object.entries(state)) {
+          if (els[key]) els[key].value = val;
+        }
+      } catch (e) { /* ignore corrupt data */ }
+    }
+
+    // Attach listeners
+    Object.values(els).forEach(input => input.addEventListener("input", () => {
+      calculate();
+      saveState();
+    }));
+
+    // Restore previous values and render
+    restoreState();
     calculate();
   </script>
 
