@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Egg Pricing Tool</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(160deg, #f5f3f0 0%, #eae7e2 50%, #f0ede8 100%);
+      font-family: 'DM Sans', sans-serif;
+      padding: 24px 16px;
+      color: #1a1a2e;
+    }
+    .container { max-width: 520px; margin: 0 auto; }
+
+```
+/* Header */
+.header { text-align: center; margin-bottom: 32px; }
+.header .emoji { font-size: 36px; margin-bottom: 4px; }
+.header h1 {
+  font-family: 'Fraunces', serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+.header p { font-size: 14px; color: #8888a0; }
+
+/* Zone Banner */
+.zone-banner {
+  border-radius: 16px;
+  padding: 18px 22px;
+  margin-bottom: 24px;
+  border: 1.5px solid;
+  transition: all 0.4s ease;
+}
+.zone-banner .zone-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.zone-banner .zone-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+}
+.zone-banner .zone-label {
+  font-family: 'Fraunces', serif;
+  font-size: 18px; font-weight: 600;
+}
+.zone-banner .zone-message { font-size: 14px; line-height: 1.5; opacity: 0.9; }
+
+/* Margin Gauge */
+.gauge-card {
+  background: rgba(255,255,255,0.6);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 24px;
+}
+.gauge-label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;
+  color: #8888a0; font-weight: 500; margin-bottom: 12px;
+}
+.gauge-track {
+  position: relative; height: 12px; border-radius: 6px;
+  background: #e8e8ee; overflow: hidden;
+}
+.gauge-marker {
+  position: absolute; top: 0; bottom: 0; width: 2px; z-index: 2;
+}
+.gauge-fill {
+  height: 100%; border-radius: 6px;
+  transition: width 0.4s ease, background 0.4s ease;
+}
+.gauge-labels {
+  display: flex; justify-content: space-between;
+  margin-top: 6px; font-size: 10px; color: #aaa;
+}
+
+/* Metrics Grid */
+.metrics-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px; margin-bottom: 28px;
+}
+.metric-card {
+  padding: 18px 20px;
+  border-radius: 14px;
+  transition: all 0.4s ease;
+}
+.metric-card.default {
+  background: rgba(255,255,255,0.6);
+  border: 1px solid rgba(0,0,0,0.06);
+}
+.metric-card .metric-label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;
+  font-weight: 500; margin-bottom: 6px;
+}
+.metric-card.default .metric-label { color: #8888a0; }
+.metric-card .metric-value {
+  font-family: 'Fraunces', serif;
+  font-size: 26px; font-weight: 700; line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.metric-card.default .metric-value { color: #1a1a2e; }
+.metric-card .metric-sub {
+  font-size: 12px; margin-top: 4px; opacity: 0.8;
+}
+.metric-card.default .metric-sub { color: #8888a0; }
+
+/* Input Controls */
+.controls-card {
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 18px;
+  padding: 26px 24px;
+  margin-bottom: 20px;
+  backdrop-filter: blur(10px);
+}
+.controls-card h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 16px; font-weight: 600; margin-bottom: 20px;
+}
+.slider-group { margin-bottom: 20px; }
+.slider-header {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 8px;
+}
+.slider-label {
+  font-size: 13px; font-weight: 500; color: #5a5a68;
+  letter-spacing: 0.02em; text-transform: uppercase;
+}
+.slider-value {
+  font-family: 'Fraunces', serif;
+  font-size: 22px; font-weight: 600; color: #1a1a2e;
+  font-variant-numeric: tabular-nums;
+}
+input[type="range"] {
+  width: 100%; height: 6px; border-radius: 3px;
+  -webkit-appearance: none; appearance: none;
+  outline: none; cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  height: 20px; width: 20px; border-radius: 50%;
+  background: #1a1a2e; cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  border: 3px solid #fff;
+}
+input[type="range"]::-moz-range-thumb {
+  height: 20px; width: 20px; border-radius: 50%;
+  background: #1a1a2e; cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  border: 3px solid #fff;
+}
+.slider-hint { font-size: 11px; color: #9999a8; margin-top: 4px; }
+.diesel-section {
+  border-top: 1px solid rgba(0,0,0,0.06);
+  padding-top: 18px; margin-top: 8px;
+}
+.diesel-section .section-label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;
+  color: #8888a0; font-weight: 500; margin-bottom: 14px;
+}
+.footer { text-align: center; font-size: 12px; color: #bbb; margin-top: 16px; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+```
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="emoji">🥚</div>
+      <h1>Egg Pricing Tool</h1>
+      <p>Dynamic tray pricing with margin zones</p>
+    </div>
+
+```
+<div class="zone-banner" id="zoneBanner">
+  <div class="zone-header">
+    <div class="zone-dot" id="zoneDot"></div>
+    <span class="zone-label" id="zoneLabel"></span>
+  </div>
+  <p class="zone-message" id="zoneMessage"></p>
+</div>
+
+<div class="gauge-card">
+  <div class="gauge-label">Margin Gauge</div>
+  <div class="gauge-track">
+    <div class="gauge-marker" id="targetLine" style="background:#1a1a2e;opacity:0.4;"></div>
+    <div class="gauge-marker" id="zeroLine" style="background:#ef4444;opacity:0.5;"></div>
+    <div class="gauge-fill" id="gaugeFill"></div>
+  </div>
+  <div class="gauge-labels">
+    <span>-10%</span>
+    <span>0%</span>
+    <span id="targetLabel">Target 15%</span>
+    <span>40%</span>
+  </div>
+</div>
+
+<div class="metrics-grid" id="metricsGrid"></div>
+
+<div class="controls-card">
+  <h2>Adjust Inputs</h2>
+
+  <div class="slider-group">
+    <div class="slider-header">
+      <span class="slider-label">Purchase Price / Tray</span>
+      <span class="slider-value" id="purchaseDisplay">₱215</span>
+    </div>
+    <input type="range" id="purchasePrice" min="100" max="350" step="5" value="215" />
+    <div class="slider-hint">What you pay your supplier per tray</div>
+  </div>
+
+  <div class="slider-group">
+    <div class="slider-header">
+      <span class="slider-label">Sell Price / Tray</span>
+      <span class="slider-value" id="sellDisplay">₱275</span>
+    </div>
+    <input type="range" id="sellPrice" min="200" max="450" step="5" value="275" />
+    <div class="slider-hint">Floor: ₱275 minimum</div>
+  </div>
+
+  <div class="slider-group">
+    <div class="slider-header">
+      <span class="slider-label">Trays Sold / Week</span>
+      <span class="slider-value" id="traysDisplay">20 trays</span>
+    </div>
+    <input type="range" id="traysPerWeek" min="0" max="200" step="5" value="20" />
+  </div>
+
+  <div class="slider-group">
+    <div class="slider-header">
+      <span class="slider-label">Target Margin</span>
+      <span class="slider-value" id="marginDisplay">15%</span>
+    </div>
+    <input type="range" id="targetMargin" min="5" max="30" step="1" value="15" />
+    <div class="slider-hint">Defines the green/yellow boundary</div>
+  </div>
+
+  <div class="diesel-section">
+    <div class="section-label">Diesel (optional, for future use)</div>
+    <div class="slider-group">
+      <div class="slider-header">
+        <span class="slider-label">Diesel / Trip</span>
+        <span class="slider-value" id="dieselDisplay">₱0</span>
+      </div>
+      <input type="range" id="dieselPerTrip" min="0" max="500" step="10" value="0" />
+    </div>
+    <div class="slider-group">
+      <div class="slider-header">
+        <span class="slider-label">Trips / Day</span>
+        <span class="slider-value" id="tripsDisplay">0 trips</span>
+      </div>
+      <input type="range" id="tripsPerDay" min="0" max="10" step="1" value="0" />
+    </div>
+  </div>
+</div>
+
+<p class="footer">Slide the inputs above to see pricing update in real time</p>
+```
+
+  </div>
+
+  <script>
+    const zoneStyles = {
+      green: { bg: "rgba(34,120,74,0.08)", border: "#22784a", text: "#22784a", glow: "0 0 40px rgba(34,120,74,0.15)", dot: "#22c55e", fill: "linear-gradient(90deg, #22c55e, #16a34a)" },
+      yellow: { bg: "rgba(180,130,20,0.08)", border: "#b48214", text: "#92690a", glow: "0 0 40px rgba(180,130,20,0.15)", dot: "#eab308", fill: "linear-gradient(90deg, #eab308, #ca8a04)" },
+      red: { bg: "rgba(180,40,40,0.08)", border: "#b42828", text: "#991b1b", glow: "0 0 40px rgba(180,40,40,0.15)", dot: "#ef4444", fill: "linear-gradient(90deg, #ef4444, #dc2626)" }
+    };
+
+    const els = {
+      purchasePrice: document.getElementById("purchasePrice"),
+      sellPrice: document.getElementById("sellPrice"),
+      traysPerWeek: document.getElementById("traysPerWeek"),
+      targetMargin: document.getElementById("targetMargin"),
+      dieselPerTrip: document.getElementById("dieselPerTrip"),
+      tripsPerDay: document.getElementById("tripsPerDay"),
+    };
+
+    function updateSliderBg(input) {
+      const pct = ((input.value - input.min) / (input.max - input.min)) * 100;
+      input.style.background = `linear-gradient(to right, #1a1a2e ${pct}%, #e2e2ea ${pct}%)`;
+    }
+
+    function calculate() {
+      const purchase = +els.purchasePrice.value;
+      const sell = +els.sellPrice.value;
+      const trays = +els.traysPerWeek.value;
+      const margin = +els.targetMargin.value;
+      const diesel = +els.dieselPerTrip.value;
+      const trips = +els.tripsPerDay.value;
+
+      // Display values
+      document.getElementById("purchaseDisplay").textContent = `₱${purchase}`;
+      document.getElementById("sellDisplay").textContent = `₱${sell}`;
+      document.getElementById("traysDisplay").textContent = `${trays} trays`;
+      document.getElementById("marginDisplay").textContent = `${margin}%`;
+      document.getElementById("dieselDisplay").textContent = `₱${diesel}`;
+      document.getElementById("tripsDisplay").textContent = `${trips} trips`;
+
+      // Update slider fills
+      Object.values(els).forEach(updateSliderBg);
+
+      // Calculations
+      const dieselCost = trays > 0 ? (diesel * trips * 7) / trays : 0;
+      const totalCost = purchase + dieselCost;
+      const profit = sell - totalCost;
+      const marginPct = sell > 0 ? (profit / sell) * 100 : 0;
+      const weeklyProfit = profit * trays;
+      const monthlyProfit = weeklyProfit * 4;
+      const breakEven = totalCost / (1 - margin / 100);
+      const recommended = Math.max(Math.ceil(breakEven / 5) * 5, 275);
+
+      let zone = "green", label = "Healthy", message = "Margins are strong. Keep it up!";
+      if (profit <= 0) {
+        zone = "red"; label = "Losing Money";
+        message = `You're losing ₱${Math.abs(profit).toFixed(0)} per tray. Consider raising to ₱${recommended}.`;
+      } else if (marginPct < margin) {
+        zone = "yellow"; label = "Margin Thinning";
+        message = `Still profitable, but below your ${margin}% target. Recommended: ₱${recommended}/tray.`;
+      }
+
+      // Zone banner
+      const s = zoneStyles[zone];
+      const banner = document.getElementById("zoneBanner");
+      banner.style.background = s.bg;
+      banner.style.borderColor = s.border;
+      banner.style.boxShadow = s.glow;
+      banner.style.color = s.text;
+      const dot = document.getElementById("zoneDot");
+      dot.style.background = s.dot;
+      dot.style.boxShadow = `0 0 8px ${s.dot}`;
+      dot.style.animation = zone === "red" ? "pulse 1.5s infinite" : "none";
+      document.getElementById("zoneLabel").textContent = label;
+      document.getElementById("zoneMessage").textContent = message;
+
+      // Gauge
+      const barWidth = Math.min(Math.max(marginPct, -10), 40);
+      const barPct = ((barWidth + 10) / 50) * 100;
+      const fill = document.getElementById("gaugeFill");
+      fill.style.width = Math.max(barPct, 0) + "%";
+      fill.style.background = s.fill;
+      document.getElementById("targetLine").style.left = ((margin + 10) / 50) * 100 + "%";
+      document.getElementById("zeroLine").style.left = (10 / 50) * 100 + "%";
+      document.getElementById("targetLabel").textContent = `Target ${margin}%`;
+
+      // Metrics
+      const cards = [
+        { label: "Profit / Tray", value: `₱${profit.toFixed(0)}`, highlight: true },
+        { label: "Margin", value: `${marginPct.toFixed(1)}%`, sub: `Target: ${margin}%`, highlight: true },
+        { label: "Weekly Profit", value: `₱${weeklyProfit.toLocaleString(undefined, { maximumFractionDigits: 0 })}`, sub: `${trays} trays` },
+        { label: "Monthly Profit", value: `₱${monthlyProfit.toLocaleString(undefined, { maximumFractionDigits: 0 })}`, sub: "~4 weeks" },
+      ];
+      if (dieselCost > 0) {
+        cards.push({ label: "Diesel / Tray", value: `₱${dieselCost.toFixed(1)}` });
+      }
+      cards.push({ label: "Total Cost / Tray", value: `₱${totalCost.toFixed(0)}` });
+
+      const grid = document.getElementById("metricsGrid");
+      grid.innerHTML = cards.map(c => {
+        const hl = c.highlight;
+        const bgStyle = hl ? `background:${s.bg};border:1.5px solid ${s.border};box-shadow:${s.glow}` : `background:rgba(255,255,255,0.6);border:1px solid rgba(0,0,0,0.06)`;
+        const labelColor = hl ? s.text : "#8888a0";
+        const valueColor = hl ? s.text : "#1a1a2e";
+        const subColor = hl ? s.text : "#8888a0";
+        return `<div class="metric-card" style="${bgStyle};padding:18px 20px;border-radius:14px;transition:all 0.4s ease">
+          <div class="metric-label" style="color:${labelColor}">${c.label}</div>
+          <div class="metric-value" style="color:${valueColor}">${c.value}</div>
+          ${c.sub ? `<div class="metric-sub" style="color:${subColor}">${c.sub}</div>` : ""}
+        </div>`;
+      }).join("");
+    }
+
+    // Attach listeners
+    Object.values(els).forEach(input => input.addEventListener("input", calculate));
+
+    // Initial render
+    calculate();
+  </script>
+
+</body>
+</html>
