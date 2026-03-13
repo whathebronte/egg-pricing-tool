@@ -173,8 +173,7 @@ input[type="range"]::-moz-range-thumb {
 <body>
   <div class="container">
     <div class="header">
-      <div class="emoji">🥚</div>
-      <h1>Egg Pricing Tool</h1>
+      <h1>🥚 Egg Pricing Tool</h1>
       <p>Dynamic tray pricing with margin zones</p>
     </div>
 
@@ -359,7 +358,6 @@ input[type="range"]::-moz-range-thumb {
       if (dieselCost > 0) {
         cards.push({ label: "Diesel / Tray", value: `₱${dieselCost.toFixed(1)}` });
       }
-      cards.push({ label: "Total Cost / Tray", value: `₱${totalCost.toFixed(0)}` });
 
       const grid = document.getElementById("metricsGrid");
       grid.innerHTML = cards.map(c => {
